@@ -42,6 +42,15 @@
             white-space: nowrap;
         }
         
+        .home-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+        
         h1 {
             text-align: center;
             color: #2c3e50;
@@ -175,8 +184,6 @@
                 font-size: 40px;
             }
         }
-        
-        
     </style>
 </head>
 <body>
@@ -249,6 +256,9 @@
                 </div>
             </div>
         </div>
+        <a href="index.html">
+            <img src="home-icon.png" alt="Home" class="home-button">
+        </a>
     </div>
 
     <script>
@@ -292,6 +302,5 @@
             document.getElementById('results').style.display = 'block';
         });
     </script>
-    <a class="btn" href="index.html">חזרה לדף הנחיתה</a>
 </body>
 </html>
