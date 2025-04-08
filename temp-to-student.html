@@ -29,12 +29,14 @@
             left: 0;
             right: 0;
             bottom: 0;
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* Adjust the number of columns */
+            grid-template-rows: repeat(5, 1fr); /* Adjust the number of rows */
+            justify-items: center;
             align-items: center;
-            font-size: 36px; /* קטן יותר */
+            font-size: 36px; /* גודל קבוע */
             color: rgba(0, 0, 0, 0.03); /* מאוד עדין */
-            transform: rotate(-45deg) translate(-20px, 30px);
+            transform: rotate(-45deg);
             pointer-events: none;
             z-index: 1000; /* תמיד מעל */
             font-weight: bold;
@@ -189,7 +191,33 @@
 </head>
 <body>
     <div class="container">
-        <div class="watermark">מירית וקסמן</div>
+        <div class="watermark">
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+        </div>
         
         <h1>מחשבון ימי חופש ומחלה</h1>
         <p class="subtitle">ממילוי מקום לסטודנט</p>
