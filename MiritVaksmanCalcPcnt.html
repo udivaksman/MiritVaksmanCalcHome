@@ -3,43 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מחשבון תקופות העסקה וזכאות לחופשה</title>
+    <title>מחשבון אחוז ניצול מחלה</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
             background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
             position: relative;
+            max-width: 1000px;
+            width: 90%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
+
         h1, h2 {
             color: #2c3e50;
             text-align: center;
         }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 2;
+
+        .watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 64px;
+            color: rgba(0, 0, 0, 0.05);
+            transform: rotate(-45deg);
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
+
         th, td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: right;
         }
+
         th {
             background-color: #f2f2f2;
             font-weight: bold;
         }
+
         button {
             padding: 10px 15px;
             background-color: #3498db;
@@ -50,9 +76,11 @@
             margin: 10px 0;
             font-weight: bold;
         }
+
         button:hover {
             background-color: #2980b9;
         }
+
         input[type="date"], input[type="number"] {
             padding: 8px;
             width: 100%;
@@ -60,99 +88,53 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .summary-table {
             margin-top: 30px;
             background-color: #f9f9f9;
         }
+
         .actions {
             text-align: center;
             margin: 20px 0;
         }
-        .result {
-            font-weight: bold;
-            color: #27ae60;
-        }
-        .error {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        .watermark {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr); /* Adjust the number of columns */
-            grid-template-rows: repeat(5, 1fr); /* Adjust the number of rows */
-            justify-items: center;
-            align-items: center;
-            font-size: 32px; /* גודל קבוע */
-            color: rgba(0, 0, 0, 0.05); /* מאוד עדין */
-            transform: rotate(-45deg);
-            pointer-events: none;
-            z-index: 1; /* תמיד מתחת */
-            font-weight: bold;
-            user-select: none;
-            white-space: nowrap;
-            gap: 20px; /* רווח בין סימני המים */
-        }
+
         .home-button {
             position: absolute;
             top: 10px;
-            right: 10px;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            z-index: 3;
+            left: 10px;
+            width: 60px;
+            height: 60px;
+            z-index: 2;
         }
-        
-        /* התאמה למובייל */
+
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
+            h1, h2 {
+                font-size: 18px;
             }
-            .home-button {
-                top: 5px;
-                right: 5px;
-                width: 40px;
-                height: 40px;
-            }
-            table, .summary-table {
+
+            button {
                 font-size: 14px;
             }
-            input[type="date"], input[type="number"] {
-                padding: 6px;
+
+            .home-button {
+                width: 50px;
+                height: 50px;
             }
-            button {
-                width: 100%;
-                padding: 12px;
+
+            th, td {
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="watermark">
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-            <div>מירית וקסמן</div>
-        </div>
-
-        <h1>מחשבון תקופות העסקה וזכאות לחופשה</h1>
-        
+        <div class="watermark">מירית וקסמן</div>
+        <a href="index.html">
+            <img src="home-icon.gif" alt="Home" class="home-button">
+        </a>
+        <h1>מחשבון אחוז ניצול מחלה</h1>
         <h2>פרטי העסקה</h2>
         <table id="employmentTable">
             <thead>
@@ -174,12 +156,12 @@
                 </tr>
             </tbody>
         </table>
-        
+
         <div class="actions">
-            <button id="addRowBtn" onclick="addRow()">הוסף שורה</button>
-            <button id="calculateBtn" onclick="calculate()">חשב</button>
+            <button id="addRowBtn">הוסף שורה</button>
+            <button id="calculateBtn">חשב</button>
         </div>
-        
+
         <h2>סיכום זכאויות</h2>
         <table id="summaryTable" class="summary-table">
             <thead>
@@ -207,65 +189,6 @@
                 </tr>
             </tbody>
         </table>
-
-        <a href="index.html">
-            <img src="home2.gif" alt="Home" class="home-button">
-        </a>
     </div>
-
-    <script>
-        // פונקציה להוספת שורה חדשה
-        function addRow() {
-            const table = document.getElementById("employmentTable").getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-            
-            const startDateCell = newRow.insertCell(0);
-            const endDateCell = newRow.insertCell(1);
-            const monthsCell = newRow.insertCell(2);
-            const percentageCell = newRow.insertCell(3);
-            const actionsCell = newRow.insertCell(4);
-
-            startDateCell.innerHTML = '<input type="date" class="start-date">';
-            endDateCell.innerHTML = '<input type="date" class="end-date">';
-            monthsCell.innerHTML = '0.00';
-            percentageCell.innerHTML = '<input type="number" class="employment-percentage" min="0" max="100" value="100">';
-            actionsCell.innerHTML = '<button class="delete-btn" onclick="deleteRow(this)">מחק</button>';
-        }
-
-        // פונקציה למחיקת שורה
-        function deleteRow(btn) {
-            const row = btn.closest('tr');
-            row.remove();
-            calculate();
-        }
-
-        // פונקציה לחישוב
-        function calculate() {
-            let totalMonths = 0;
-            let vacationDaysEarned = 0;
-
-            // סריקה על כל השורות בטבלה
-            const rows = document.querySelectorAll("#employmentTable tbody tr");
-            rows.forEach(row => {
-                const startDate = new Date(row.querySelector(".start-date").value);
-                const endDate = new Date(row.querySelector(".end-date").value);
-                const percentage = parseFloat(row.querySelector(".employment-percentage").value);
-
-                if (startDate && endDate) {
-                    // חישוב חודשי העסקה
-                    const months = (endDate.getFullYear() - startDate.getFullYear()) * 12 + (endDate.getMonth() - startDate.getMonth());
-                    row.querySelector(".employment-months").textContent = months;
-
-                    // חישוב ימי חופשה
-                    vacationDaysEarned += months * 1.25 * (percentage / 100);  // נניח 1.25 ימים לחודש כפול אחוז משרה
-                    totalMonths += months;
-                }
-            });
-
-            // הצגת התוצאות
-            document.getElementById("totalMonths").textContent = totalMonths.toFixed(2);
-            document.getElementById("vacationDaysEarned").textContent = vacationDaysEarned.toFixed(2);
-        }
-    </script>
 </body>
 </html>
