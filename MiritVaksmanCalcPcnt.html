@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מחשבון אחוז ניצול מחלה</title>
     <style>
+        /* עיצוב כללי */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -41,7 +42,7 @@
             bottom: 0;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            grid-auto-rows: 1fr;
+            grid-template-rows: repeat(5, 1fr);
             justify-items: center;
             align-items: center;
             font-size: 32px;
@@ -151,7 +152,7 @@
             <div>מירית וקסמן</div>
         </div>
         <a href="index.html">
-            <img src="home2.png" alt="Home" class="home-button">
+            <img src="home-icon.gif" alt="Home" class="home-button">
         </a>
         <h1>מחשבון אחוז ניצול מחלה</h1>
         <div id="error" class="error"></div>
@@ -213,6 +214,20 @@
     </div>
 
     <script>
+        // הוספת שורה חדשה
+        document.getElementById('addRowBtn').addEventListener('click', function() {
+            const tbody = document.querySelector('#employmentTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="date" class="start-date"></td>
+                <td><input type="date" class="end-date"></td>
+                <td class="employment-months">0.00</td>
+                <td><input type="number" class="employment-percentage" min="0" max="100" value="100"></td>
+                <td><button class="delete-btn" onclick="deleteRow(this)">מחק</button></td>
+            `;
+            tbody.appendChild(newRow);
+        });
+
         // פונקציית ניקוי טבלה ונתונים
         document.getElementById('clearBtn').addEventListener('click', function() {
             const tbody = document.querySelector('#employmentTable tbody');
@@ -225,13 +240,76 @@
                     <td><button class="delete-btn" onclick="deleteRow(this)">מחק</button></td>
                 </tr>
             `;
-            document.getElementById('totalMonths').textContent = "0.00";
-            document.getElementById('vacationDaysEarned').textContent = "0.00";
-            document.getElementById('vacationDaysUsed').textContent = "0.00";
-            document.getElementById('vacationDaysRemaining').textContent = "0.00";
-            document.getElementById('totalSickDaysUsed').textContent = "0.00";
-            document.getElementById('usagePercentage').textContent = "0%";
             document.getElementById('error').textContent = '';
+        });
+
+        // פונקציית מחיקת שורה
+        function deleteRow(button) {
+            const tbody = document.querySelector('#employmentTable tbody');
+            if (tbody.rows.length > 1) {
+                button.closest('tr').remove();
+            } else {
+                alert('חייבת להישאר לפחות שורה אחת.');
+            }
+        }
+
+        // חישוב חודשי העסקה
+        function calculateMonths(startDate, endDate) {
+            if (!startDate || !endDate) return 0;
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            if (start > end) {
+                document.getElementById('error').textContent = 'תאריך הסיום לא יכול להיות קודם לתאריך ההתחלה.';
+                return -1;
+            } else {
+                document.getElementById('error').textContent = '';
+            }
+
+            const years = end.getFullYear() - start.getFullYear();
+            const months = end.getMonth() - start.getMonth();
+            const days = end.getDate() - start.getDate();
+
+            return (years * 12 + months + days / 30).toFixed(2);
+        }
+
+        // חישוב סיכום
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            let totalMonths = 0;
+            let totalVacationDays = 0;
+            let totalSickDaysUsed = 0;
+            let usagePercentage = 0;
+
+            const rows = document.querySelectorAll('#employmentTable tbody tr');
+            for (const row of rows) {
+                const startDate = row.querySelector('.start-date').value;
+                const endDate = row.querySelector('.end-date').value;
+                const percentage = parseFloat(row.querySelector('.employment-percentage').value) || 0;
+
+                const months = parseFloat(calculateMonths(startDate, endDate));
+                if (months === -1) return; // עצירה במקרה של שגיאה בתאריכים
+
+                totalMonths += months;
+                totalVacationDays += months * 2.5 * (percentage / 100);
+
+                row.querySelector('.employment-months').textContent = months.toFixed(2);
+            }
+
+            const vacationDaysBalance = parseFloat(document.getElementById('vacationDaysBalance').value) || 0;
+            const sickDaysHalfSalary = parseFloat(document.getElementById('sickDaysHalfSalary').value) || 0;
+
+            const vacationDaysUsed = totalVacationDays - vacationDaysBalance;
+            totalSickDaysUsed = vacationDaysUsed + sickDaysHalfSalary;
+
+            if (totalVacationDays > 0) {
+                usagePercentage = (totalSickDaysUsed / totalVacationDays) * 100;
+            }
+
+            document.getElementById('totalMonths').textContent = totalMonths.toFixed(2);
+            document.getElementById('vacationDaysEarned').textContent = totalVacationDays.toFixed(2);
+            document.getElementById('vacationDaysUsed').textContent = vacationDaysUsed.toFixed(2);
+            document.getElementById('vacationDaysRemaining').textContent = vacationDaysBalance.toFixed(2);
+            document.getElementById('totalSickDaysUsed').textContent = totalSickDaysUsed.toFixed(2);
+            document.getElementById('usagePercentage').textContent = usagePercentage.toFixed(2) + '%';
         });
     </script>
 </body>
