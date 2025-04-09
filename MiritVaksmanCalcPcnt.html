@@ -88,6 +88,17 @@
             background-color: #2980b9;
         }
 
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .delete-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
         input[type="date"], input[type="number"] {
             padding: 8px;
             width: 100%;
@@ -202,7 +213,7 @@
                     <th>תאריך סיום</th>
                     <th>חודשי העסקה</th>
                     <th>אחוז משרה</th>
-                    <th>פעולות</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -211,7 +222,7 @@
                     <td><input type="date" class="end-date"></td>
                     <td class="employment-months">0.00</td>
                     <td><input type="number" class="employment-percentage" min="0" max="100" value="100"></td>
-                    <td><button class="delete-btn" onclick="deleteRow(this)">מחק</button></td>
+                    <td><button class="delete-btn" onclick="deleteRow(this)"><img src="trash-icon.png" alt="Delete"></button></td>
                 </tr>
             </tbody>
         </table>
@@ -261,7 +272,7 @@
                 <td><input type="date" class="end-date"></td>
                 <td class="employment-months">0.00</td>
                 <td><input type="number" class="employment-percentage" min="0" max="100" value="100"></td>
-                <td><button class="delete-btn" onclick="deleteRow(this)">מחק</button></td>
+                <td><button class="delete-btn" onclick="deleteRow(this)"><img src="trash-icon.png" alt="Delete"></button></td>
             `;
             tbody.appendChild(newRow);
         });
@@ -275,7 +286,7 @@
                     <td><input type="date" class="end-date"></td>
                     <td class="employment-months">0.00</td>
                     <td><input type="number" class="employment-percentage" min="0" max="100" value="100"></td>
-                    <td><button class="delete-btn" onclick="deleteRow(this)">מחק</button></td>
+                    <td><button class="delete-btn" onclick="deleteRow(this)"><img src="trash-icon.png" alt="Delete"></button></td>
                 </tr>
             `;
             document.getElementById('error').textContent = '';
