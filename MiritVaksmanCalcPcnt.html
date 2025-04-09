@@ -282,6 +282,7 @@
 
         // פונקציית ניקוי טבלה ונתונים
         document.getElementById('clearBtn').addEventListener('click', function() {
+            // ניקוי שורות בטבלה העליונה
             const tbody = document.querySelector('#employmentTable tbody');
             tbody.innerHTML = `
                 <tr>
@@ -292,9 +293,23 @@
                     <td><button class="delete-btn" onclick="deleteRow(this)"><img src="trash-icon.png" alt="Delete"></button></td>
                 </tr>
             `;
+        
+            // ניקוי הודעות שגיאה
             document.getElementById('error').textContent = '';
+        
+            // ניקוי שדות בטבלה התחתונה
+            document.getElementById('totalMonths').textContent = '0.00';
+            document.getElementById('vacationDaysEarned').textContent = '0.00';
+            document.getElementById('vacationDaysUsed').textContent = '0.00';
+            document.getElementById('vacationDaysRemaining').textContent = '0.00';
+            document.getElementById('totalSickDaysUsed').textContent = '0.00';
+            document.getElementById('usagePercentage').textContent = '0%';
+        
+            // איפוס ערכי אינפוטים בטבלה התחתונה
+            document.getElementById('vacationDaysBalance').value = '0';
+            document.getElementById('sickDaysHalfSalary').value = '0';
         });
-
+        
         // פונקציית מחיקת שורה
         function deleteRow(button) {
             const tbody = document.querySelector('#employmentTable tbody');
