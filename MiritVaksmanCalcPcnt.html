@@ -26,6 +26,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            z-index: 2;
         }
 
         h1, h2 {
@@ -39,15 +40,19 @@
             left: 0;
             right: 0;
             bottom: 0;
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            justify-items: center;
             align-items: center;
-            font-size: 64px;
+            font-size: 32px;
             color: rgba(0, 0, 0, 0.05);
             transform: rotate(-45deg);
             pointer-events: none;
-            z-index: 0;
             user-select: none;
+            white-space: nowrap;
+            gap: 20px;
+            z-index: 1;
         }
 
         table {
@@ -103,10 +108,10 @@
         .home-button {
             position: absolute;
             top: 10px;
-            left: 10px;
-            width: 60px;
-            height: 60px;
-            z-index: 2;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            z-index: 3;
         }
 
         @media (max-width: 768px) {
@@ -119,8 +124,8 @@
             }
 
             .home-button {
-                width: 50px;
-                height: 50px;
+                width: 40px;
+                height: 40px;
             }
 
             th, td {
@@ -130,10 +135,21 @@
     </style>
 </head>
 <body>
+    <div class="watermark">
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+    </div>
     <div class="container">
-        <div class="watermark">מירית וקסמן</div>
         <a href="index.html">
-            <img src="home-icon.gif" alt="Home" class="home-button">
+            <img src="home2.png" alt="Home" class="home-button">
         </a>
         <h1>מחשבון אחוז ניצול מחלה</h1>
         <h2>פרטי העסקה</h2>
@@ -193,7 +209,7 @@
     </div>
 
     <script>
-        // הוספת שורה חדשה
+        // פונקציה להוסיף שורה חדשה
         document.getElementById('addRowBtn').addEventListener('click', function() {
             const tbody = document.querySelector('#employmentTable tbody');
             const newRow = document.createElement('tr');
@@ -207,7 +223,7 @@
             tbody.appendChild(newRow);
         });
 
-        // חישוב חודשי העסקה
+        // פונקציה לחישוב חודשים
         function calculateMonths(startDate, endDate) {
             if (!startDate || !endDate) return 0;
             const start = new Date(startDate);
@@ -235,6 +251,8 @@
         document.getElementById('calculateBtn').addEventListener('click', function() {
             let totalMonths = 0;
             let totalVacationDays = 0;
+            let totalSickDaysUsed = 0;
+            let usagePercentage = 0;
 
             document.querySelectorAll('#employmentTable tbody tr').forEach(row => {
                 const startDate = row.querySelector('.start-date').value;
@@ -248,8 +266,22 @@
                 row.querySelector('.employment-months').textContent = months.toFixed(2);
             });
 
+            const vacationDaysBalance = parseFloat(document.getElementById('vacationDaysBalance').value) || 0;
+            const sickDaysHalfSalary = parseFloat(document.getElementById('sickDaysHalfSalary').value) || 0;
+
+            const vacationDaysUsed = totalVacationDays - vacationDaysBalance;
+            totalSickDaysUsed = vacationDaysUsed + sickDaysHalfSalary;
+
+            if (totalVacationDays > 0) {
+                usagePercentage = (totalSickDaysUsed / totalVacationDays) * 100;
+            }
+
             document.getElementById('totalMonths').textContent = totalMonths.toFixed(2);
             document.getElementById('vacationDaysEarned').textContent = totalVacationDays.toFixed(2);
+            document.getElementById('vacationDaysUsed').textContent = vacationDaysUsed.toFixed(2);
+            document.getElementById('vacationDaysRemaining').textContent = vacationDaysBalance.toFixed(2);
+            document.getElementById('totalSickDaysUsed').textContent = totalSickDaysUsed.toFixed(2);
+            document.getElementById('usagePercentage').textContent = usagePercentage.toFixed(2) + '%';
         });
     </script>
 </body>
