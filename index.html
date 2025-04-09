@@ -50,25 +50,38 @@
         }
 
         .watermark {
-            font-size: 32px;
-            color: rgba(0, 0, 0, 0.05);
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            justify-items: center;
             align-items: center;
+            font-size: 32px;
+            color: rgba(0, 0, 0, 0.05);
             transform: rotate(-45deg);
-            z-index: 1;
             pointer-events: none;
             user-select: none;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <div class="watermark">מירית וקסמן</div>
+    <div class="watermark">
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+        <div>מירית וקסמן</div>
+    </div>
     <div class="container">
         <h1>בחר סוג מחשבון</h1>
         <a class="btn" href="student-to-temp.html">מסטודנט למילוי מקום</a>
