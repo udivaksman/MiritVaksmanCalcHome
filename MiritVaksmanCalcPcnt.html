@@ -79,7 +79,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin: 10px 0;
+            margin: 10px 5px;
             font-weight: bold;
         }
 
@@ -109,9 +109,16 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             z-index: 3;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
         }
 
         @media (max-width: 768px) {
@@ -124,8 +131,8 @@
             }
 
             .home-button {
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
             }
 
             th, td {
@@ -135,23 +142,20 @@
     </style>
 </head>
 <body>
-    <div class="watermark">
-        <div>מירית וקסמן</div>
-        <div>מירית וקסמן</div>
-        <div>מירית וקסמן</div>
-        <div>מירית וקסמן</div>
-        <div>מירית וקסמן</div>
-        <div>מירית וקסמן</div>
-        <div>מירית וקסמן</div>
-        <div>מירית וקסמן</div>
-        <div>מירית וקסמן</div>
-        <div>מירית וקסמן</div>
-    </div>
     <div class="container">
+        <div class="watermark">
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+            <div>מירית וקסמן</div>
+        </div>
         <a href="index.html">
             <img src="home2.png" alt="Home" class="home-button">
         </a>
         <h1>מחשבון אחוז ניצול מחלה</h1>
+        <div id="error" class="error"></div>
         <h2>פרטי העסקה</h2>
         <table id="employmentTable">
             <thead>
@@ -176,6 +180,7 @@
 
         <div class="actions">
             <button id="addRowBtn">הוסף שורה</button>
+            <button id="clearBtn">נקה</button>
             <button id="calculateBtn">חשב</button>
         </div>
 
@@ -209,7 +214,7 @@
     </div>
 
     <script>
-        // פונקציה להוסיף שורה חדשה
+        // הוספת שורה חדשה
         document.getElementById('addRowBtn').addEventListener('click', function() {
             const tbody = document.querySelector('#employmentTable tbody');
             const newRow = document.createElement('tr');
@@ -223,21 +228,22 @@
             tbody.appendChild(newRow);
         });
 
-        // פונקציה לחישוב חודשים
-        function calculateMonths(startDate, endDate) {
-            if (!startDate || !endDate) return 0;
-            const start = new Date(startDate);
-            const end = new Date(endDate);
-            if (start > end) return 0;
+        // פונקציית ניקוי טבלה ונתונים
+        document.getElementById('clearBtn').addEventListener('click', function() {
+            const tbody = document.querySelector('#employmentTable tbody');
+            tbody.innerHTML = `
+                <tr>
+                    <td><input type="date" class="start-date"></td>
+                    <td><input type="date" class="end-date"></td>
+                    <td class="employment-months">0.00</td>
+                    <td><input type="number" class="employment-percentage" min="0" max="100" value="100"></td>
+                    <td><button class="delete-btn" onclick="deleteRow(this)">מחק</button></td>
+                </tr>
+            `;
+            document.getElementById('error').textContent = '';
+        });
 
-            const years = end.getFullYear() - start.getFullYear();
-            const months = end.getMonth() - start.getMonth();
-            const days = end.getDate() - start.getDate();
-
-            return (years * 12 + months + days / 30).toFixed(2);
-        }
-
-        // מחיקת שורה
+        // פונקציית מחיקת שורה
         function deleteRow(button) {
             const tbody = document.querySelector('#employmentTable tbody');
             if (tbody.rows.length > 1) {
@@ -247,6 +253,25 @@
             }
         }
 
+        // חישוב חודשי העסקה
+        function calculateMonths(startDate, endDate) {
+            if (!startDate || !endDate) return 0;
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            if (start > end) {
+                document.getElementById('error').textContent = 'תאריך הסיום לא יכול להיות קודם לתאריך ההתחלה.';
+                return -1;
+            } else {
+                document.getElementById('error').textContent = '';
+            }
+
+            const years = end.getFullYear() - start.getFullYear();
+            const months = end.getMonth() - start.getMonth();
+            const days = end.getDate() - start.getDate();
+
+            return (years * 12 + months + days / 30).toFixed(2);
+        }
+
         // חישוב סיכום
         document.getElementById('calculateBtn').addEventListener('click', function() {
             let totalMonths = 0;
@@ -254,17 +279,20 @@
             let totalSickDaysUsed = 0;
             let usagePercentage = 0;
 
-            document.querySelectorAll('#employmentTable tbody tr').forEach(row => {
+            const rows = document.querySelectorAll('#employmentTable tbody tr');
+            for (const row of rows) {
                 const startDate = row.querySelector('.start-date').value;
                 const endDate = row.querySelector('.end-date').value;
                 const percentage = parseFloat(row.querySelector('.employment-percentage').value) || 0;
 
-                const months = parseFloat(calculateMonths(startDate, endDate)) || 0;
+                const months = parseFloat(calculateMonths(startDate, endDate));
+                if (months === -1) return; // עצירה במקרה של שגיאה בתאריכים
+
                 totalMonths += months;
                 totalVacationDays += months * 2.5 * (percentage / 100);
 
                 row.querySelector('.employment-months').textContent = months.toFixed(2);
-            });
+            }
 
             const vacationDaysBalance = parseFloat(document.getElementById('vacationDaysBalance').value) || 0;
             const sickDaysHalfSalary = parseFloat(document.getElementById('sickDaysHalfSalary').value) || 0;
