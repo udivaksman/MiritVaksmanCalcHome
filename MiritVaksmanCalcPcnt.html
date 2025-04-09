@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מחשבון אחוז ניצול מחלה</title>
     <style>
+        /* עיצוב כללי */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -132,7 +133,7 @@
     <div class="container">
         <div class="watermark">מירית וקסמן</div>
         <a href="index.html">
-            <img src="home2.png" alt="Home" class="home-button">
+            <img src="home-icon.gif" alt="Home" class="home-button">
         </a>
         <h1>מחשבון אחוז ניצול מחלה</h1>
         <h2>פרטי העסקה</h2>
@@ -190,5 +191,66 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        // הוספת שורה חדשה
+        document.getElementById('addRowBtn').addEventListener('click', function() {
+            const tbody = document.querySelector('#employmentTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="date" class="start-date"></td>
+                <td><input type="date" class="end-date"></td>
+                <td class="employment-months">0.00</td>
+                <td><input type="number" class="employment-percentage" min="0" max="100" value="100"></td>
+                <td><button class="delete-btn" onclick="deleteRow(this)">מחק</button></td>
+            `;
+            tbody.appendChild(newRow);
+        });
+
+        // חישוב חודשי העסקה
+        function calculateMonths(startDate, endDate) {
+            if (!startDate || !endDate) return 0;
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            if (start > end) return 0;
+
+            const years = end.getFullYear() - start.getFullYear();
+            const months = end.getMonth() - start.getMonth();
+            const days = end.getDate() - start.getDate();
+
+            return (years * 12 + months + days / 30).toFixed(2);
+        }
+
+        // מחיקת שורה
+        function deleteRow(button) {
+            const tbody = document.querySelector('#employmentTable tbody');
+            if (tbody.rows.length > 1) {
+                button.closest('tr').remove();
+            } else {
+                alert('חייבת להישאר לפחות שורה אחת.');
+            }
+        }
+
+        // חישוב סיכום
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            let totalMonths = 0;
+            let totalVacationDays = 0;
+
+            document.querySelectorAll('#employmentTable tbody tr').forEach(row => {
+                const startDate = row.querySelector('.start-date').value;
+                const endDate = row.querySelector('.end-date').value;
+                const percentage = parseFloat(row.querySelector('.employment-percentage').value) || 0;
+
+                const months = parseFloat(calculateMonths(startDate, endDate)) || 0;
+                totalMonths += months;
+                totalVacationDays += months * 2.5 * (percentage / 100);
+
+                row.querySelector('.employment-months').textContent = months.toFixed(2);
+            });
+
+            document.getElementById('totalMonths').textContent = totalMonths.toFixed(2);
+            document.getElementById('vacationDaysEarned').textContent = totalVacationDays.toFixed(2);
+        });
+    </script>
 </body>
 </html>
