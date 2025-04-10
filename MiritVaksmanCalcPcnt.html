@@ -137,18 +137,22 @@
         }
 
         #usageContainer {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-top: 20px;
             font-size: 18px;
-            max-width: 100%; /* הגבלת רוחב */
-            overflow-wrap: break-word; /* שבירת שורה במקרה של טקסט ארוך */
+            gap: 20px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
         }
         
         #usagePercentageDisplay {
             padding: 5px;
             border-radius: 8px;
-            display: inline-block; /* שמירה על אלמנט בתוך השורה */
-            width: auto; /* התאמת רוחב לתוכן */
         }
 
         @media (max-width: 768px) {
@@ -247,8 +251,8 @@
 
         <div class="actions">
             <button id="addRowBtn">הוסף שורה</button>
-            <button id="clearBtn">נקה</button>
-            <button id="calculateBtn">חשב</button>
+            //<button id="clearBtn">נקה</button>
+            //<button id="calculateBtn">חשב</button>
         </div>
 
         <h2>סיכום זכאויות</h2>
@@ -276,9 +280,13 @@
                 </tr>
             </tbody>
         </table>
-    <div id="usageContainer">
+    <div id="usageContainer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 18px;">
         <span id="usageLabel">אחוז ניצול:</span>
-        <span id="usagePercentageDisplay">0%</span>
+        <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
+        <div class="actions" style="display: flex; gap: 10px;">
+            <button id="clearBtn">נקה</button>
+            <button id="calculateBtn">חשב</button>
+        </div>
     </div>
 
     <script>
@@ -319,7 +327,12 @@
             document.getElementById('vacationDaysUsed').textContent = '0.00';
             document.getElementById('vacationDaysRemaining').textContent = '0.00';
             document.getElementById('totalSickDaysUsed').textContent = '0.00';
-            //document.getElementById('usagePercentage').textContent = '0%';
+        
+            // איפוס אחוז הניצול
+            const usageDisplay = document.getElementById('usagePercentageDisplay');
+            usageDisplay.textContent = '0%';
+            usageDisplay.style.backgroundColor = ''; // איפוס צבע רקע
+            usageDisplay.style.color = ''; // איפוס צבע טקסט
         
             // איפוס ערכי אינפוטים בטבלה התחתונה
             document.getElementById('vacationDaysBalance').value = '0';
