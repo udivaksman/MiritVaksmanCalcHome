@@ -277,10 +277,10 @@
                 <tr>
                     <td id="totalMonths">0.00</td>
                     <td id="vacationDaysEarned">0.00</td>
-                    <td><input type="number" id="vacationDaysBalance" min="0" step="0.5" value="0"></td>
+                    <td><input type="number" id="vacationDaysBalance" min="0" step="0.5" value=""></td>
                     <td id="vacationDaysUsed">0.00</td>
                     <td id="vacationDaysRemaining">0.00</td>
-                    <td><input type="number" id="sickDaysHalfSalary" min="0" step="0.5" value="0"></td>
+                    <td><input type="number" id="sickDaysHalfSalary" min="0" step="0.5" value=""></td>
                     <td id="totalSickDaysUsed">0.00</td>
                 </tr>
             </tbody>
@@ -343,8 +343,8 @@
             usageDisplay.style.color = ''; // איפוס צבע טקסט
         
             // איפוס ערכי אינפוטים בטבלה התחתונה
-            document.getElementById('vacationDaysBalance').value = '0';
-            document.getElementById('sickDaysHalfSalary').value = '0';
+            document.getElementById('vacationDaysBalance').value = '';
+            document.getElementById('sickDaysHalfSalary').value = '';
         });
         
         // פונקציית מחיקת שורה
