@@ -138,21 +138,27 @@
 
         #usageContainer {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 10px; /* רווח אחיד בין האלמנטים */
             margin-top: 20px;
             font-size: 18px;
-            gap: 20px;
-        }
-        
-        .actions {
-            display: flex;
-            gap: 10px;
         }
         
         #usagePercentageDisplay {
             padding: 5px;
             border-radius: 8px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #ddd;
         }
 
         @media (max-width: 768px) {
@@ -251,8 +257,6 @@
 
         <div class="actions">
             <button id="addRowBtn">הוסף שורה</button>
-            //<button id="clearBtn">נקה</button>
-            //<button id="calculateBtn">חשב</button>
         </div>
 
         <h2>סיכום זכאויות</h2>
@@ -280,14 +284,13 @@
                 </tr>
             </tbody>
         </table>
-    <div id="usageContainer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 18px;">
-        <span id="usageLabel">אחוז ניצול:</span>
-        <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
-        <div class="actions" style="display: flex; gap: 10px;">
+
+        div id="usageContainer" style="display: flex; align-items: center; gap: 10px; margin-top: 20px; font-size: 18px;">
+            <span id="usageLabel">אחוז ניצול:</span>
+            <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
             <button id="clearBtn">נקה</button>
             <button id="calculateBtn">חשב</button>
         </div>
-    </div>
 
     <script>
         // הוספת שורה חדשה
