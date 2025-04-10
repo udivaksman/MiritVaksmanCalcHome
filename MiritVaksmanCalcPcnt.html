@@ -136,6 +136,13 @@
             margin-bottom: 15px;
         }
 
+        #usagePercentageDisplay {
+            padding: 5px;
+            border-radius: 8px;
+            display: inline-block; /* שמירה על אלמנט בתוך השורה */
+            width: auto; /* התאמת רוחב לתוכן */
+        }
+
         @media (max-width: 768px) {
             .container {
                 width: 100%;
@@ -261,10 +268,9 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-        <div id="usageContainer" style="text-align: center; margin-top: 20px; font-size: 18px;">
+    <div id="usageContainer">
         <span id="usageLabel">אחוז ניצול:</span>
-        <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
+        <span id="usagePercentageDisplay">0%</span>
     </div>
 
     <script>
