@@ -247,7 +247,6 @@
                     <th>יתרה</th>
                     <th>חופשת מחלה<br>מחצית משכורת (3)</th>
                     <th>סך ניצול ימי מחלה<br>(4)</th>
-                    <th>אחוז ניצול<br>(6)</th>
                 </tr>
             </thead>
             <tbody>
@@ -259,10 +258,13 @@
                     <td id="vacationDaysRemaining">0.00</td>
                     <td><input type="number" id="sickDaysHalfSalary" min="0" step="0.5" value="0"></td>
                     <td id="totalSickDaysUsed">0.00</td>
-                    <td id="usagePercentage">0%</td>
                 </tr>
             </tbody>
         </table>
+    </div>
+        <div id="usageContainer" style="text-align: center; margin-top: 20px; font-size: 18px;">
+        <span id="usageLabel">אחוז ניצול:</span>
+        <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
     </div>
 
     <script>
@@ -303,7 +305,7 @@
             document.getElementById('vacationDaysUsed').textContent = '0.00';
             document.getElementById('vacationDaysRemaining').textContent = '0.00';
             document.getElementById('totalSickDaysUsed').textContent = '0.00';
-            document.getElementById('usagePercentage').textContent = '0%';
+            //document.getElementById('usagePercentage').textContent = '0%';
         
             // איפוס ערכי אינפוטים בטבלה התחתונה
             document.getElementById('vacationDaysBalance').value = '0';
@@ -340,43 +342,58 @@
         }
 
         // חישוב סיכום
-        document.getElementById('calculateBtn').addEventListener('click', function() {
+       document.getElementById('calculateBtn').addEventListener('click', function() {
             let totalMonths = 0;
             let totalVacationDays = 0;
             let totalSickDaysUsed = 0;
             let usagePercentage = 0;
-
+        
             const rows = document.querySelectorAll('#employmentTable tbody tr');
             for (const row of rows) {
                 const startDate = row.querySelector('.start-date').value;
                 const endDate = row.querySelector('.end-date').value;
                 const percentage = parseFloat(row.querySelector('.employment-percentage').value) || 0;
-
+        
                 const months = parseFloat(calculateMonths(startDate, endDate));
-                if (months === -1) return; // עצירה במקרה של שגיאה בתאריכים
-
+                if (months === -1) return; // Stop in case of date error
+        
                 totalMonths += months;
                 totalVacationDays += months * 2.5 * (percentage / 100);
-
+        
                 row.querySelector('.employment-months').textContent = months.toFixed(2);
             }
-
+        
             const vacationDaysBalance = parseFloat(document.getElementById('vacationDaysBalance').value) || 0;
             const sickDaysHalfSalary = parseFloat(document.getElementById('sickDaysHalfSalary').value) || 0;
-
+        
             const vacationDaysUsed = totalVacationDays - vacationDaysBalance;
             totalSickDaysUsed = vacationDaysUsed + sickDaysHalfSalary;
-
+        
             if (totalVacationDays > 0) {
                 usagePercentage = (totalSickDaysUsed / totalVacationDays) * 100;
             }
-
+        
             document.getElementById('totalMonths').textContent = totalMonths.toFixed(2);
             document.getElementById('vacationDaysEarned').textContent = totalVacationDays.toFixed(2);
             document.getElementById('vacationDaysUsed').textContent = vacationDaysUsed.toFixed(2);
             document.getElementById('vacationDaysRemaining').textContent = vacationDaysBalance.toFixed(2);
             document.getElementById('totalSickDaysUsed').textContent = totalSickDaysUsed.toFixed(2);
-            document.getElementById('usagePercentage').textContent = usagePercentage.toFixed(2) + '%';
+        
+            // Update usage percentage below the table
+            const usageDisplay = document.getElementById('usagePercentageDisplay');
+            usageDisplay.textContent = usagePercentage.toFixed(2) + '%';
+        
+            // Change background color based on the percentage
+            if (usagePercentage > 65) {
+                usageDisplay.style.backgroundColor = 'red';
+                usageDisplay.style.color = 'white';
+            } else if (usagePercentage >= 36 && usagePercentage <= 65) {
+                usageDisplay.style.backgroundColor = 'yellow';
+                usageDisplay.style.color = 'black';
+            } else {
+                usageDisplay.style.backgroundColor = 'green';
+                usageDisplay.style.color = 'white';
+            }
         });
     </script>
 </body>
