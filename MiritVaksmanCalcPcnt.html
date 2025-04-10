@@ -137,16 +137,12 @@
         }
 
         #usageContainer {
-            display: flex; /* ליישור כל האלמנטים בשורה */
-            justify-content: center; /* למרכז את כל האלמנטים אופקית */
-            align-items: center; /* ליישר את האלמנטים אנכית */
+            display: flex; /* יישור כל האלמנטים בשורה */
+            justify-content: center; /* מרכז את כל הקבוצה */
+            align-items: center; /* יישור אנכי */
             margin-top: 20px;
             font-size: 18px;
-        }
-        
-        
-        #usageLabel {
-            margin-right: 5px; /* רווח קטן בין הכיתוב לכפתור */
+            gap: 20px; /* רווח בין אחוז הניצול לכפתורים */
         }
         
         #usagePercentageDisplay {
@@ -155,16 +151,11 @@
         }
         
         button {
-            margin: 0 5px; /* רווחים קבועים בין הכפתורים */
             padding: 10px 15px;
             font-size: 14px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-        }
-        
-        button:hover {
-            background-color: #ddd;
         }
         
         button:hover {
@@ -296,12 +287,14 @@
         </table>
 
         <div id="usageContainer" style="display: flex; justify-content: center; align-items: center; margin-top: 20px; font-size: 18px;">
-            <div style="margin-right: auto; display: flex; align-items: center;">
-                <span id="usageLabel" style="margin-right: 5px;">אחוז ניצול:</span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span id="usageLabel">אחוז ניצול:</span>
                 <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
             </div>
-            <button id="clearBtn" style="margin: 0 5px;">נקה</button>
-            <button id="calculateBtn" style="margin: 0 5px;">חשב</button>
+            <div style="display: flex; align-items: center; gap: 10px; margin-left: 20px;">
+                <button id="clearBtn">נקה</button>
+                <button id="calculateBtn">חשב</button>
+            </div>
         </div>
 
     <script>
