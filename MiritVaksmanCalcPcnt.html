@@ -291,20 +291,23 @@
             <button id="calculateBtn">חשב</button>
         </div>
         <div id="usageContainer" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 10px; font-size: 18px;">
-            <span>
-                <span id="usageLabel">אחוז ניצול:</span>
-                <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
+          <span>
+            <span id="usageLabel">אחוז ניצול:</span>
+            <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
+          </span>
+          <span id="usageFractionDisplay" 
+                style="font-size: 12px; color: #888; margin-top: 2px; text-align: center; direction: rtl; display: none;">
+            (
+            <span style="display: inline-flex; align-items: center;">
+              <span style="display: flex; flex-direction: column; align-items: center;">
+                <span id="numerator">0</span>
+                <span style="border-top: 1px solid #888; min-width: 32px; margin: 0 2px;"></span>
+                <span id="denominator">0</span>
+              </span>
+              <span style="font-size: 11px; margin-right: 4px;">× 100</span>
             </span>
-            <div style="display: flex; align-items: center; justify-content: center; margin-top: 6px;">
-                <div style="display: flex; flex-direction: column; align-items: center;">
-                    <span id="numerator">0</span>
-                    <span style="display: flex; align-items: center;">
-                        <span style="border-top: 2px solid #555; min-width: 48px; display: inline-block; margin: 0 2px;"></span>
-                        <span id="times100" style="font-size: 16px; margin-right: 6px; margin-left: 6px; vertical-align: middle;">× 100</span>
-                    </span>
-                    <span id="denominator">0</span>
-                </div>
-            </div>
+            )
+          </span>
         </div>
 
     <script>
@@ -351,7 +354,8 @@
             usageDisplay.textContent = '0%';
             usageDisplay.style.backgroundColor = ''; // איפוס צבע רקע
             usageDisplay.style.color = ''; // איפוס צבע טקסט
-        
+            // הסתרת תצוגת השבר
+            document.getElementById('usageFractionDisplay').style.display = 'none';
             // איפוס ערכי אינפוטים בטבלה התחתונה
             document.getElementById('vacationDaysBalance').value = '';
             document.getElementById('sickDaysHalfSalary').value = '';
@@ -386,8 +390,7 @@
             return (years * 12 + months + days / 30).toFixed(2);
         }
 
-        document.getElementById('numerator').textContent = totalSickDaysUsed.toFixed(2);
-        document.getElementById('denominator').textContent = totalVacationDays.toFixed(2);
+        
 
         // חישוב סיכום
        document.getElementById('calculateBtn').addEventListener('click', function() {
@@ -430,7 +433,15 @@
             // Update usage percentage below the table
             const usageDisplay = document.getElementById('usagePercentageDisplay');
             usageDisplay.textContent = usagePercentage.toFixed(2) + '%';
-        
+            // עדכון תצוגת השבר
+            const fraction = document.getElementById('usageFractionDisplay');
+            if (totalVacationDays > 0) {
+                document.getElementById('numerator').textContent = totalSickDaysUsed.toFixed(2);
+                document.getElementById('denominator').textContent = totalVacationDays.toFixed(2);
+                fraction.style.display = 'inline-block';
+            } else {
+                fraction.style.display = 'none';
+            }
             // Change background color based on the percentage
             if (usagePercentage > 65) {
                 usageDisplay.style.backgroundColor = 'red';
