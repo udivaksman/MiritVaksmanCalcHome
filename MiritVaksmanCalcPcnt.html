@@ -192,48 +192,7 @@
             input[type="date"], input[type="number"] {
                 padding: 6px;
             }
-        }        
-    
-    .formula-flex {
-      display: inline-flex;
-      align-items: center;
-      font-size: 18px;
-      direction: ltr;
-    }
-    .fraction {
-      display: inline-block;
-      vertical-align: middle;
-      text-align: center;
-      margin-left: 6px;
-      margin-right: 6px;
-      line-height: 1.1;
-    }
-    .fraction .top,
-    .fraction .bottom {
-      font-weight: normal; /* היה bold, עכשיו רגיל */
-      display: block;
-    }
-    .fraction .line {
-      border-top: 2px solid #444;
-      height: 0;
-      margin: 2px 0;
-      width: 38px; /* היה רחב מדי */
-      display: block;
-    }
-    .formula-mul, .formula-eq {
-      margin: 0 3px;    /* היה 8px, עכשיו צמוד ונעים */
-      font-size: 1em;
-      position: relative;
-      top: -2px;        /* היה -6px, עכשיו באמצע */
-      font-weight: normal;
-    }
-    @media (max-width: 600px) {
-      .formula-flex { font-size: 13px; }
-      .fraction .line { width: 26px; }
-    }
-
-    
-
+        }
     </style>
 </head>
 <body>
@@ -327,12 +286,16 @@
             </tbody>
         </table>
 
-        <div id="usageButtons" style="display: flex; justify-content: center; align-items: center; margin-top: 20px; gap: 10px;">
-            <button id="clearBtn">נקה</button>
-            <button id="calculateBtn">חשב</button>
+        <div id="usageContainer" style="display: flex; justify-content: center; align-items: center; margin-top: 20px; font-size: 18px;">            
+            <div style="display: flex; align-items: center; gap: 10px; margin-left: 20px;">
+                <button id="clearBtn">נקה</button>
+                <button id="calculateBtn">חשב</button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span id="usageLabel">אחוז ניצול:</span>
+                <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
+            </div>
         </div>
-        
-        
 
     <script>
         // הוספת שורה חדשה
@@ -375,10 +338,9 @@
         
             // איפוס אחוז הניצול
             const usageDisplay = document.getElementById('usagePercentageDisplay');
-            usageDisplay.textContent = '0%';            
+            usageDisplay.textContent = '0%';
             usageDisplay.style.backgroundColor = ''; // איפוס צבע רקע
             usageDisplay.style.color = ''; // איפוס צבע טקסט
-            document.getElementById('usageFormulaDisplay').textContent = '';
         
             // איפוס ערכי אינפוטים בטבלה התחתונה
             document.getElementById('vacationDaysBalance').value = '';
@@ -416,79 +378,58 @@
 
         // חישוב סיכום
        document.getElementById('calculateBtn').addEventListener('click', function() {
-    let totalMonths = 0;
-    let totalVacationDays = 0;
-    let totalSickDaysUsed = 0;
-    let usagePercentage = 0;
-
-    const rows = document.querySelectorAll('#employmentTable tbody tr');
-    for (const row of rows) {
-        const startDate = row.querySelector('.start-date').value;
-        const endDate = row.querySelector('.end-date').value;
-        const percentage = parseFloat(row.querySelector('.employment-percentage').value) || 0;
-
-        const months = parseFloat(calculateMonths(startDate, endDate));
-        if (months === -1) return; // עצור במקרה של טעות בתאריכים
-
-        totalMonths += months;
-        totalVacationDays += months * 2.5 * (percentage / 100);
-
-        row.querySelector('.employment-months').textContent = months.toFixed(2);
-    }
-
-    const vacationDaysBalance = parseFloat(document.getElementById('vacationDaysBalance').value) || 0;
-    const sickDaysHalfSalary = parseFloat(document.getElementById('sickDaysHalfSalary').value) || 0;
-
-    const vacationDaysUsed = totalVacationDays - vacationDaysBalance;
-    totalSickDaysUsed = vacationDaysUsed + sickDaysHalfSalary;
-
-    if (totalVacationDays > 0) {
-        usagePercentage = (totalSickDaysUsed / totalVacationDays) * 100;
-    }
-
-    // חישוב צבעים לפי האחוז
-    let bgColor = '';
-    let textColor = '';
-    if (usagePercentage > 65) {
-        bgColor = 'red';
-        textColor = 'white';
-    } else if (usagePercentage >= 36 && usagePercentage <= 65) {
-        bgColor = 'yellow';
-        textColor = 'black';
-    } else {
-        bgColor = 'green';
-        textColor = 'white';
-    }
-
-    // עדכון תצוגת הנוסחה והתוצאה (אין שום usagePercentageDisplay נוסף בדף!)
-    const formulaDisplay = document.getElementById('usageFormulaDisplay');
-    if (totalVacationDays > 0) {
-        formulaDisplay.innerHTML = `
-          <span class="formula-flex">
-            <span class="fraction">
-              <span class="top">${totalSickDaysUsed.toFixed(2)}</span>
-              <span class="line"></span>
-              <span class="bottom">${totalVacationDays.toFixed(2)}</span>
-            </span>
-            <span class="formula-mul">&times; 100</span>
-            <span class="formula-eq">=</span>
-            <span style="background:${bgColor};color:${textColor};padding:5px 10px;border-radius:8px;font-size:18px;display:inline-block;min-width:54px;margin-right:5px;">
-              ${usagePercentage.toFixed(2)}%
-            </span>
-            <span id="usageLabel" style="margin-right:4px;">אחוז ניצול</span>
-          </span>
-        `;
-    } else {
-        formulaDisplay.innerHTML = '';
-    }
-
-    // עדכון תאי הסיכום בטבלה
-    document.getElementById('totalMonths').textContent = totalMonths.toFixed(2);
-    document.getElementById('vacationDaysEarned').textContent = totalVacationDays.toFixed(2);
-    document.getElementById('vacationDaysUsed').textContent = vacationDaysUsed.toFixed(2);
-    document.getElementById('vacationDaysRemaining').textContent = vacationDaysBalance.toFixed(2);
-    document.getElementById('totalSickDaysUsed').textContent = totalSickDaysUsed.toFixed(2);
-});
+            let totalMonths = 0;
+            let totalVacationDays = 0;
+            let totalSickDaysUsed = 0;
+            let usagePercentage = 0;
+        
+            const rows = document.querySelectorAll('#employmentTable tbody tr');
+            for (const row of rows) {
+                const startDate = row.querySelector('.start-date').value;
+                const endDate = row.querySelector('.end-date').value;
+                const percentage = parseFloat(row.querySelector('.employment-percentage').value) || 0;
+        
+                const months = parseFloat(calculateMonths(startDate, endDate));
+                if (months === -1) return; // Stop in case of date error
+        
+                totalMonths += months;
+                totalVacationDays += months * 2.5 * (percentage / 100);
+        
+                row.querySelector('.employment-months').textContent = months.toFixed(2);
+            }
+        
+            const vacationDaysBalance = parseFloat(document.getElementById('vacationDaysBalance').value) || 0;
+            const sickDaysHalfSalary = parseFloat(document.getElementById('sickDaysHalfSalary').value) || 0;
+        
+            const vacationDaysUsed = totalVacationDays - vacationDaysBalance;
+            totalSickDaysUsed = vacationDaysUsed + sickDaysHalfSalary;
+        
+            if (totalVacationDays > 0) {
+                usagePercentage = (totalSickDaysUsed / totalVacationDays) * 100;
+            }
+        
+            document.getElementById('totalMonths').textContent = totalMonths.toFixed(2);
+            document.getElementById('vacationDaysEarned').textContent = totalVacationDays.toFixed(2);
+            document.getElementById('vacationDaysUsed').textContent = vacationDaysUsed.toFixed(2);
+            document.getElementById('vacationDaysRemaining').textContent = vacationDaysBalance.toFixed(2);
+            document.getElementById('totalSickDaysUsed').textContent = totalSickDaysUsed.toFixed(2);
+        
+            // Update usage percentage below the table
+            const usageDisplay = document.getElementById('usagePercentageDisplay');
+            usageDisplay.textContent = usagePercentage.toFixed(2) + '%';
+        
+            // Change background color based on the percentage
+            if (usagePercentage > 65) {
+                usageDisplay.style.backgroundColor = 'red';
+                usageDisplay.style.color = 'white';
+            } else if (usagePercentage >= 36 && usagePercentage <= 65) {
+                usageDisplay.style.backgroundColor = 'yellow';
+                usageDisplay.style.color = 'black';
+            } else {
+                usageDisplay.style.backgroundColor = 'green';
+                usageDisplay.style.color = 'white';
+            }
+        });
     </script>
 </body>
 </html>
