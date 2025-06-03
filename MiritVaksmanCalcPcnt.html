@@ -192,7 +192,28 @@
             input[type="date"], input[type="number"] {
                 padding: 6px;
             }
+        }        
+    @media (max-width: 600px) {
+        #usageFormulaDisplay {
+        font-size: 12px !important;
         }
+        #usageFormulaDisplay .usage-result {
+        font-size: 18px !important; /* תשאיר את התוצאה בגודל רגיל */
+        color: #222;
+        margin-right: 4px;
+        }
+    }
+    @media (min-width: 601px) {
+        #usageFormulaDisplay {
+        font-size: 16px !important;
+        }
+        #usageFormulaDisplay .usage-result {
+        font-size: 18px !important;
+        color: #222;
+        margin-right: 4px;
+        }
+    }
+
     </style>
 </head>
 <body>
@@ -294,7 +315,7 @@
             <div style="display: flex; align-items: center; gap: 10px;">
                 <span id="usageLabel">אחוז ניצול:</span>
                 <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
-                <span id="usageFormulaDisplay" style="display: inline-block; direction: ltr; text-align: center; font-size: 16px; margin-right: 10px; min-width: 80px;"></span>
+                <span id="usageFormulaDisplay" style="display: inline-block; direction: ltr; text-align: center; font-size: 16px; margin-right: 10px; min-width: 120px;"></span>
 
             </div>
         </div>
@@ -414,16 +435,21 @@
             const formulaDisplay = document.getElementById('usageFormulaDisplay');
             if (totalVacationDays > 0) {
                 formulaDisplay.innerHTML = `
-                    <div style="display: inline-block; vertical-align: middle;">
-                        <div style="font-weight: bold;">${totalSickDaysUsed.toFixed(2)}</div>
-                        <div style="border-top: 2px solid #888; margin: 2px 0;"></div>
-                        <div style="font-weight: bold;">${totalVacationDays.toFixed(2)}</div>
-                    </div>
-                    <span style="font-size: 18px; margin: 0 5px; vertical-align: middle;">× 100</span>
+                    <span style="display: inline-flex; align-items: center; flex-wrap: nowrap;">
+                        <span style="display: inline-block; text-align: center; line-height: 1.1; min-width: 45px;">
+                            <span style="font-weight: bold; display: block;">${totalSickDaysUsed.toFixed(2)}</span>
+                            <span style="border-top: 2px solid #888; display: block; width: 100%; margin: 0 0 1px 0;"></span>
+                            <span style="font-weight: bold; display: block;">${totalVacationDays.toFixed(2)}</span>
+                        </span>
+                        <span style="font-size: 18px; margin: 0 8px 0 4px; font-weight: bold; align-self: center;">× 100</span>
+                        <span style="font-size: 20px; font-weight: bold; margin: 0 4px; align-self: center;">=</span>
+                        <span class="usage-result">${usagePercentage.toFixed(2)}%</span>
+                    </span>
                 `;
             } else {
                 formulaDisplay.innerHTML = '';
             }
+            
         
             document.getElementById('totalMonths').textContent = totalMonths.toFixed(2);
             document.getElementById('vacationDaysEarned').textContent = totalVacationDays.toFixed(2);
