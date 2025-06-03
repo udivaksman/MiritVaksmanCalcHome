@@ -290,9 +290,21 @@
             <button id="clearBtn">נקה</button>
             <button id="calculateBtn">חשב</button>
         </div>
-        <div id="usageContainer" style="display: flex; justify-content: center; align-items: center; margin-top: 10px; font-size: 18px;">
-            <span id="usageLabel">אחוז ניצול:</span>
-            <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
+        <div id="usageContainer" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 10px; font-size: 18px;">
+            <span>
+                <span id="usageLabel">אחוז ניצול:</span>
+                <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
+            </span>
+            <div style="display: flex; align-items: center; justify-content: center; margin-top: 6px;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <span id="numerator">0</span>
+                    <span style="display: flex; align-items: center;">
+                        <span style="border-top: 2px solid #555; min-width: 48px; display: inline-block; margin: 0 2px;"></span>
+                        <span id="times100" style="font-size: 16px; margin-right: 6px; margin-left: 6px; vertical-align: middle;">× 100</span>
+                    </span>
+                    <span id="denominator">0</span>
+                </div>
+            </div>
         </div>
 
     <script>
@@ -373,6 +385,9 @@
 
             return (years * 12 + months + days / 30).toFixed(2);
         }
+
+        document.getElementById('numerator').textContent = totalSickDaysUsed.toFixed(2);
+        document.getElementById('denominator').textContent = totalVacationDays.toFixed(2);
 
         // חישוב סיכום
        document.getElementById('calculateBtn').addEventListener('click', function() {
