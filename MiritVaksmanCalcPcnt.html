@@ -17,7 +17,7 @@
             min-height: 100vh;
         }
         .start-date, .end-date {
-            width: 110px;
+            width: 90px;
             min-width: 80px;
             max-width: 120px;
             font-size: 15px;
@@ -401,23 +401,50 @@
             }
             input.value = value;
         }
+        function isValidDate(str) {
+            // בדיקה בסיסית לפורמט dd/mm/yyyy
+            if (!/^\d{2}\/\d{2}\/\d{4}$/.test(str)) return false;
+            const [dd, mm, yyyy] = str.split('/').map(Number);
+            if (mm < 1 || mm > 12 || dd < 1 || dd > 31) return false;
+            // בדיקה אם היום קיים בחודש
+            const date = new Date(yyyy, mm - 1, dd);
+            return date.getDate() === dd && (date.getMonth() + 1) === mm && date.getFullYear() === yyyy;
+        }
+        
+        document.addEventListener('focusout', function(e) {
+            if (e.target.classList.contains('start-date') || e.target.classList.contains('end-date')) {
+                if (e.target.value && !isValidDate(e.target.value)) {
+                    e.target.style.backgroundColor = '#ffd6d6'; // אדום בהיר
+                    alert('התאריך לא תקין. יש להקליד תאריך בפורמט dd/mm/yyyy ולהקפיד על ערכים הגיוניים.');
+                    e.target.focus();
+                } else {
+                    e.target.style.backgroundColor = '';
+                }
+            }
+        });
 
         // חישוב חודשי העסקה
+        function parseDate(str) {
+            // קולט תאריך בפורמט dd/mm/yyyy ומחזיר אובייקט Date תקין
+            if (!/^\d{2}\/\d{2}\/\d{4}$/.test(str)) return null;
+            const [dd, mm, yyyy] = str.split('/').map(Number);
+            return new Date(yyyy, mm - 1, dd);
+        }
+        
         function calculateMonths(startDate, endDate) {
             if (!startDate || !endDate) return 0;
-            const start = new Date(startDate);
-            const end = new Date(endDate);
+            const start = parseDate(startDate);
+            const end = parseDate(endDate);
+            if (!start || !end) return 0;
             if (start > end) {
                 document.getElementById('error').textContent = 'תאריך הסיום לא יכול להיות קודם לתאריך ההתחלה.';
                 return -1;
             } else {
                 document.getElementById('error').textContent = '';
             }
-
             const years = end.getFullYear() - start.getFullYear();
             const months = end.getMonth() - start.getMonth();
             const days = end.getDate() - start.getDate();
-
             return (years * 12 + months + days / 30).toFixed(2);
         }
 
