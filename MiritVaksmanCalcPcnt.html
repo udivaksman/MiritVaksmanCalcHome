@@ -258,8 +258,8 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input type="date" class="start-date"></td>
-                    <td><input type="date" class="end-date"></td>
+                    <td><input type="text" class="start-date" placeholder="dd/mm/yyyy" maxlength="10" oninput="autoFormatDate(this)"></td>
+                    <td><input type="text" class="end-date" placeholder="dd/mm/yyyy" maxlength="10" oninput="autoFormatDate(this)"></td>
                     <td class="employment-months">0.00</td>
                     <td><input type="number" class="employment-percentage" min="0" max="100" value="100"></td>
                     <td><button class="delete-btn" onclick="deleteRow(this)"><img src="trash-icon.png" alt="Delete"></button></td>
@@ -330,8 +330,8 @@
             const tbody = document.querySelector('#employmentTable tbody');
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
-                <td><input type="date" class="start-date"></td>
-                <td><input type="date" class="end-date"></td>
+                <td><input type="text" class="start-date" placeholder="dd/mm/yyyy" maxlength="10" oninput="autoFormatDate(this)"></td>
+                <td><input type="text" class="end-date" placeholder="dd/mm/yyyy" maxlength="10" oninput="autoFormatDate(this)"></td>
                 <td class="employment-months">0.00</td>
                 <td><input type="number" class="employment-percentage" min="0" max="100" value="100"></td>
                 <td><button class="delete-btn" onclick="deleteRow(this)"><img src="trash-icon.png" alt="Delete"></button></td>
@@ -345,8 +345,8 @@
             const tbody = document.querySelector('#employmentTable tbody');
             tbody.innerHTML = `
                 <tr>
-                    <td><input type="date" class="start-date"></td>
-                    <td><input type="date" class="end-date"></td>
+                    <td><input type="text" class="start-date" placeholder="dd/mm/yyyy" maxlength="10" oninput="autoFormatDate(this)"></td>
+                    <td><input type="text" class="end-date" placeholder="dd/mm/yyyy" maxlength="10" oninput="autoFormatDate(this)"></td>
                     <td class="employment-months">0.00</td>
                     <td><input type="number" class="employment-percentage" min="0" max="100" value="100"></td>
                     <td><button class="delete-btn" onclick="deleteRow(this)"><img src="trash-icon.png" alt="Delete"></button></td>
@@ -383,6 +383,16 @@
             } else {
                 alert('חייבת להישאר לפחות שורה אחת.');
             }
+        }
+
+        function autoFormatDate(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 4) {
+                value = value.slice(0,2) + '/' + value.slice(2,4) + '/' + value.slice(4,8);
+            } else if (value.length > 2) {
+                value = value.slice(0,2) + '/' + value.slice(2,4);
+            }
+            input.value = value;
         }
 
         // חישוב חודשי העסקה
