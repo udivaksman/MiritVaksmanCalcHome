@@ -472,16 +472,15 @@
             const formulaDisplay = document.getElementById('usageFormulaDisplay');
             if (totalVacationDays > 0) {
                 formulaDisplay.innerHTML = `
-                  <span class="formula-flex">
-                    <span class="fraction">
-                      <span class="top">${totalSickDaysUsed.toFixed(2)}</span>
-                      <span class="line"></span>
-                      <span class="bottom">${totalVacationDays.toFixed(2)}</span>
-                    </span>
-                    <span class="formula-mul">&times; 100</span>
-                    <span class="formula-eq">=</span>
-                    <span class="formula-result">${usagePercentage.toFixed(2)}%</span>
-                  </span>
+                    <span class="formula-flex">
+                        <span class="fraction">
+                            <span class="top">${totalSickDaysUsed.toFixed(2)}</span>
+                            <span class="line"></span>
+                            <span class="bottom">${totalVacationDays.toFixed(2)}</span>
+                        </span>
+                        <span class="formula-mul">&times; 100</span>
+                        <span class="formula-eq">=</span>
+                      </span>
                 `;
             } else {
                 formulaDisplay.innerHTML = '';
