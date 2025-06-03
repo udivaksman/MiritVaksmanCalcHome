@@ -294,6 +294,8 @@
             <div style="display: flex; align-items: center; gap: 10px;">
                 <span id="usageLabel">אחוז ניצול:</span>
                 <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
+                <span id="usageFormulaDisplay" style="display: inline-block; direction: ltr; text-align: center; font-size: 16px; margin-right: 10px; min-width: 80px;"></span>
+
             </div>
         </div>
 
@@ -339,6 +341,7 @@
             // איפוס אחוז הניצול
             const usageDisplay = document.getElementById('usagePercentageDisplay');
             usageDisplay.textContent = '0%';
+            document.getElementById('usageFormulaDisplay').textContent = '';
             usageDisplay.style.backgroundColor = ''; // איפוס צבע רקע
             usageDisplay.style.color = ''; // איפוס צבע טקסט
         
@@ -406,6 +409,20 @@
         
             if (totalVacationDays > 0) {
                 usagePercentage = (totalSickDaysUsed / totalVacationDays) * 100;
+            }
+
+            const formulaDisplay = document.getElementById('usageFormulaDisplay');
+            if (totalVacationDays > 0) {
+                formulaDisplay.innerHTML = `
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div style="font-weight: bold;">${totalSickDaysUsed.toFixed(2)}</div>
+                        <div style="border-top: 2px solid #888; margin: 2px 0;"></div>
+                        <div style="font-weight: bold;">${totalVacationDays.toFixed(2)}</div>
+                    </div>
+                    <span style="font-size: 18px; margin: 0 5px; vertical-align: middle;">× 100</span>
+                `;
+            } else {
+                formulaDisplay.innerHTML = '';
             }
         
             document.getElementById('totalMonths').textContent = totalMonths.toFixed(2);
