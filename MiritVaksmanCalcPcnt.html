@@ -290,23 +290,24 @@
             <button id="clearBtn">נקה</button>
             <button id="calculateBtn">חשב</button>
         </div>
-        <div id="usageContainer" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 10px; font-size: 18px;">
+        <div id="usageContainer" style="display: flex; flex-direction: column; align-items: center; margin-top: 10px; font-size: 18px;">
           <span>
             <span id="usageLabel">אחוז ניצול:</span>
             <span id="usagePercentageDisplay" style="padding: 5px; border-radius: 8px;">0%</span>
           </span>
-          <span id="usageFractionDisplay" 
-                style="font-size: 12px; color: #888; margin-top: 2px; text-align: center; direction: rtl; display: none;">
-            (
-            <span style="display: inline-flex; align-items: center;">
-              <span style="display: flex; flex-direction: column; align-items: center;">
+          <span id="usageFractionDisplay" style="margin-top: 2px; display: none;">
+            <span style="display: inline-flex; align-items: center; font-size: 13px; color: #888;">
+              <span class="big-paren">(</span>
+              <span style="display: flex; flex-direction: column; align-items: center; line-height: 1;">
                 <span id="numerator">0</span>
-                <span style="border-top: 1px solid #888; min-width: 32px; margin: 0 2px;"></span>
+                <span style="display: flex; align-items: center;">
+                  <span style="border-top: 1.5px solid #888; min-width: 36px; margin: 0 2px;"></span>
+                  <span id="times100" style="font-size: 11px; margin-right: 6px; margin-left: 0;">× 100</span>
+                </span>
                 <span id="denominator">0</span>
               </span>
-              <span style="font-size: 11px; margin-right: 4px;">× 100</span>
+              <span class="big-paren">)</span>
             </span>
-            )
           </span>
         </div>
 
@@ -434,13 +435,14 @@
             const usageDisplay = document.getElementById('usagePercentageDisplay');
             usageDisplay.textContent = usagePercentage.toFixed(2) + '%';
             // עדכון תצוגת השבר
-            const fraction = document.getElementById('usageFractionDisplay');
+            // לאחר חישוב
+            const usageFraction = document.getElementById('usageFractionDisplay');
             if (totalVacationDays > 0) {
                 document.getElementById('numerator').textContent = totalSickDaysUsed.toFixed(2);
                 document.getElementById('denominator').textContent = totalVacationDays.toFixed(2);
-                fraction.style.display = 'inline-block';
+                usageFraction.style.display = 'inline-block';
             } else {
-                fraction.style.display = 'none';
+                usageFraction.style.display = 'none';
             }
             // Change background color based on the percentage
             if (usagePercentage > 65) {
