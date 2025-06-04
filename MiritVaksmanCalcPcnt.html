@@ -438,7 +438,9 @@
                 if (e.target.value && !isValidDate(e.target.value)) {
                     e.target.style.backgroundColor = '#ffd6d6'; // אדום בהיר
                     alert('התאריך לא תקין. יש להקליד תאריך בפורמט dd/mm/yyyy ולהקפיד על ערכים הגיוניים.');
-                    e.target.focus();
+                    e.target.value = ""; // נקה את השדה!
+                    e.target.style.backgroundColor = '';
+                    // לא לעשות e.target.focus() כאן כדי לא להיכנס ללולאה
                 } else {
                     e.target.style.backgroundColor = '';
                 }
